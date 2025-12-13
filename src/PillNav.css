@@ -1,23 +1,25 @@
 .pill-nav-container {
-  position: absolute;
-  top: 1em;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99;
+  /* Position handled by site-header in index.css */
+  z-index: 1000;
 }
 
 @media (max-width: 768px) {
   .pill-nav-container {
     width: 100%;
     left: 0;
+    transform: none;
+    padding: 0 16px;
+    box-sizing: border-box;
+    top: 16px;
   }
 }
 
 .pill-nav {
-  --nav-h: 42px;
-  --logo: 36px;
-  --pill-pad-x: 30px;
-  --pill-gap: 3px;
+  --nav-h: 52px;
+  /* Taller */
+  --logo: 44px;
+  --pill-pad-x: 20px;
+  --pill-gap: 6px;
   width: max-content;
   display: flex;
   align-items: center;
@@ -28,7 +30,7 @@
   .pill-nav {
     width: 100%;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0;
     background: transparent;
   }
 }
@@ -38,9 +40,20 @@
   display: flex;
   align-items: center;
   height: var(--nav-h);
-  background: var(--base, #000);
+  background: rgba(15, 15, 15, 0.85);
+  /* More opaque */
+  backdrop-filter: blur(16px);
+  /* Stronger blur */
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  /* Stronger border */
   border-radius: 9999px;
+  padding: 5px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  /* Stronger shadow */
 }
+
+/* ... rest of the file ... */
 
 .pill-logo {
   width: var(--nav-h);
@@ -82,7 +95,8 @@
   justify-content: center;
   height: 100%;
   padding: 0 var(--pill-pad-x);
-  background: var(--pill-bg, #fff);
+  background: transparent;
+  /* Force transparent */
   color: var(--pill-text, var(--base, #000));
   text-decoration: none;
   border-radius: 9999px;
@@ -96,6 +110,12 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+.pill.is-active {
+  background: var(--base, #000);
+  color: #000;
+  /* Force black text on white active pill */
 }
 
 .pill .hover-circle {
@@ -191,9 +211,12 @@
   top: 3em;
   left: 1rem;
   right: 1rem;
-  background: var(--base, #f0f0f0);
-  border-radius: 27px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   z-index: 998;
   opacity: 0;
   transform-origin: top center;

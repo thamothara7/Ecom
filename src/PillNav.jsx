@@ -85,7 +85,7 @@ const PillNav = ({
     window.addEventListener('resize', onResize);
 
     if (document.fonts?.ready) {
-      document.fonts.ready.then(layout).catch(() => {});
+      document.fonts.ready.then(layout).catch(() => { });
     }
 
     const menu = mobileMenuRef.current;
@@ -225,7 +225,7 @@ const PillNav = ({
   return (
     <div className="pill-nav-container">
       <nav className={`pill-nav ${className}`} aria-label="Primary" style={cssVars}>
-        {isRouterLink(items?.[0]?.href) ? (
+        {logo && (isRouterLink(items?.[0]?.href) ? (
           <Link
             className="pill-logo"
             to={items[0].href}
@@ -250,7 +250,7 @@ const PillNav = ({
           >
             <img src={logo} alt={logoAlt} ref={logoImgRef} />
           </a>
-        )}
+        ))}
 
         <div className="pill-nav-items desktop-only" ref={navItemsRef}>
           <ul className="pill-list" role="menubar">
