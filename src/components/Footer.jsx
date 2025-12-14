@@ -23,6 +23,7 @@ const Footer = () => {
                         <li><Link to="/about">About Us</Link></li>
                         <li><Link to="/contact">Contact</Link></li>
                         <li><Link to="/terms">Terms & Conditions</Link></li>
+                        <li><Link to="/admin/login">Admin Login</Link></li>
                     </ul>
                 </div>
                 <div className="footer-section">

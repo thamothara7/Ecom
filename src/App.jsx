@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import PillNav from './PillNav';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
@@ -8,6 +8,10 @@ import logo from './assets/logo.svg';
 import './App.css';
 
 import Footer from './components/Footer';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import { getCartCount, subscribeToCart } from './utils/cartStore';
 
 const Page = ({ title }) => (
   <div className="page-wrapper">
@@ -64,28 +68,72 @@ const Page = ({ title }) => (
 );
 
 
-const Content = () => {
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import { getCurrentUser, subscribeToAuth, logoutUser } from './utils/userStore';
+
+const AppContent = () => {
+  const [cartCount, setCartCount] = useState(0);
+  const [user, setUser] = useState(null);
   const location = useLocation();
   const [activeHref, setActiveHref] = useState(location.pathname);
+
+  useEffect(() => {
+    // Initial loads
+    setCartCount(getCartCount());
+    setUser(getCurrentUser());
+
+    // Subscribe to updates
+    const cartUnsub = subscribeToCart(() => {
+      setCartCount(getCartCount());
+    });
+
+    const authUnsub = subscribeToAuth(() => {
+      setUser(getCurrentUser());
+    });
+
+    return () => {
+      cartUnsub();
+      authUnsub();
+    };
+  }, []);
 
   useEffect(() => {
     setActiveHref(location.pathname);
   }, [location]);
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logoutUser();
+    // Optional: navigate home if needed, but the store update will re-render nav
+  };
+
+  const navItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Shop', href: '/shop' },
+    { label: 'About', href: '/about' },
+  ];
+
+  if (user) {
+    // Logged in nav
+    navItems.push({ label: `Hi, ${user.name.split(' ')[0]}`, href: '#' });
+    navItems.push({ label: 'Logout', href: '#', onClick: handleLogout });
+  } else {
+    // Guest nav
+    navItems.push({ label: 'Sign In', href: '/login' });
+  }
+
   return (
     <>
       <header className="site-header">
         <div className="header-logo">
-          <img src={logo} alt="Luxe Logo" />
+          <Link to="/">
+            <img src={logo} alt="Luxe" />
+          </Link>
         </div>
 
         <PillNav
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Shop', href: '/shop' },
-            { label: 'About', href: '/about' },
-            { label: 'Contact', href: '/contact' }
-          ]}
+          items={navItems}
           activeHref={activeHref}
           className="custom-nav"
           ease="power2.easeOut"
@@ -96,9 +144,9 @@ const Content = () => {
         />
 
         <div className="header-cart">
-          <a href="/cart" className="cart-icon">
-            Cart (0)
-          </a>
+          <Link to="/cart" className="cart-icon">
+            Cart ({cartCount})
+          </Link>
         </div>
       </header>
       <main className="main-content">
@@ -108,8 +156,19 @@ const Content = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<Page title="About Us" />} />
           <Route path="/contact" element={<Page title="Contact Us" />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            }
+          />
         </Routes>
-      </main>
+      </main >
     </>
   );
 };
@@ -117,7 +176,7 @@ const Content = () => {
 function App() {
   return (
     <Router>
-      <Content />
+      <AppContent />
     </Router>
   );
 }

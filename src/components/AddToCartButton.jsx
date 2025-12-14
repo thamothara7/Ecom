@@ -1,13 +1,17 @@
 import { useState, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const AddToCartButton = () => {
+import { addToCart } from '../utils/cartStore';
+
+const AddToCartButton = ({ product }) => {
     const [isAdded, setIsAdded] = useState(false);
     const buttonRef = useRef(null);
     const textRef = useRef(null);
 
     const handleClick = () => {
         if (isAdded) return;
+
+        addToCart(product);
 
         const tl = gsap.timeline({
             onComplete: () => {

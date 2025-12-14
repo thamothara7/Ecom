@@ -1,6 +1,12 @@
+/* Update PillNav Container Position */
 .pill-nav-container {
-  /* Position handled by site-header in index.css */
-  z-index: 1000;
+  position: fixed;
+  /* Fixed to viewport */
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0;
+  z-index: 1002;
 }
 
 @media (max-width: 768px) {
@@ -10,7 +16,7 @@
     transform: none;
     padding: 0 16px;
     box-sizing: border-box;
-    top: 16px;
+    top: 12px;
   }
 }
 
@@ -18,8 +24,8 @@
   --nav-h: 52px;
   /* Taller */
   --logo: 44px;
-  --pill-pad-x: 20px;
-  --pill-gap: 6px;
+  --pill-pad-x: 24px;
+  --pill-gap: 8px;
   width: max-content;
   display: flex;
   align-items: center;
@@ -53,8 +59,6 @@
   /* Stronger shadow */
 }
 
-/* ... rest of the file ... */
-
 .pill-logo {
   width: var(--nav-h);
   height: var(--nav-h);
@@ -67,6 +71,7 @@
   overflow: hidden;
 }
 
+/* If logo is passed to PillNav */
 .pill-logo img {
   width: 100%;
   height: 100%;
@@ -112,12 +117,17 @@
   overflow: hidden;
 }
 
+.pill:hover {
+  color: #fff;
+}
+
 .pill.is-active {
   background: var(--base, #000);
   color: #000;
   /* Force black text on white active pill */
 }
 
+/* Hover circle logic handled by JS GSAP, keeping structure but ensuring clean base */
 .pill .hover-circle {
   position: absolute;
   left: 50%;
@@ -155,8 +165,7 @@
   will-change: transform, opacity;
 }
 
-/* Active indicator removed */
-
+/* Mobile & Responsive */
 .desktop-only {
   display: block;
 }
@@ -230,6 +239,26 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+}
+
+.mobile-menu-link {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link.is-active {
+  background: #fff;
+  color: #000;
+  transform: scale(1.02);
 }
 
 .mobile-menu-popover .mobile-menu-link {
