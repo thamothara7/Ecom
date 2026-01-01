@@ -4,7 +4,7 @@ import PillNav from './PillNav';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
-import logo from './assets/logo.svg';
+import logo from './assets/favicon.png';
 import './App.css';
 
 import Footer from './components/Footer';
